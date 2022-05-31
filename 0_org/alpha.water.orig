@@ -9,11 +9,11 @@ FoamFile
 {
     format      ascii;
     class       volScalarField;
-    object      p_rgh;
+    object      alpha.water;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [1 -1 -2 0 0 0 0];
+dimensions      [0 0 0 0 0 0 0];
 
 internalField   uniform 0;
 
@@ -21,29 +21,35 @@ boundaryField
 {
     leftWall
     {
-        type            totalPressure;
-        p0              uniform 0;
-
+        type            inletOutlet;
+        inletValue      uniform 0;
+        value           uniform 0;
     }
 
     rightWall
     {
-        type            totalPressure;
-        p0              uniform 0;
+        type            inletOutlet;
+        inletValue      uniform 0;
+        value           uniform 0;
     }
 
     lowerWall
     {
-        type            totalPressure;
-        p0              uniform 0;
+        type            inletOutlet;
+        inletValue      uniform 0;
+        value           uniform 0;
     }
 
     atmosphere
     {
-        type            totalPressure;
-        p0              uniform 0;
+        type            inletOutlet;
+        inletValue      uniform 0;
+        value           uniform 0;
     }
-
+    rollLeft_stlSurface
+    {
+        type            zeroGradient;
+    }
     defaultFaces
     {
         type            empty;
