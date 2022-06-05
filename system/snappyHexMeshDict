@@ -13,43 +13,32 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-// Which of the steps to run
 castellatedMesh true;
 snap            true;
 addLayers       false;
 
 geometry
 {
+    
     rollRight.stl
     {
         type triSurfaceMesh;
-        name rollRight_stlSurface;
-
-
+        name rollRight;
     }
 
-    cylinderRight
-    {
-    type            searchableCylinder;
-    point1          (0.05 0 -0.03);
-    point2          (0.05 0 0.03);
-    radius          0.05;
-    }
-
-
-    rollLeft.stl
+    
+    rollRight_area.stl
     {
         type triSurfaceMesh;
-        name rollLeft_stlSurface;
-
-
+        name rollRight_area;
     }
-    cylinderLeft
+
+    box
     {
-    type            searchableCylinder;
-    point1          (0.05 0 -0.03);
-    point2          (0.05 0 0.03);
-    radius          0.05;
+    	type searchableBox;
+
+        min ( -0.3 -0.3 0.3 );
+        max ( 0.3 0.3 0.3 );
     }
 
 };
@@ -65,48 +54,102 @@ castellatedMeshControls
 
     maxGlobalCells 2000000;
 
-    minRefinementCells 0;
+    minRefinementCells 10;
 
     maxLoadUnbalance 0.10;
 
-    nCellsBetweenLevels 3;
+    //nCellsBetweenLevels 1;
+    nCellsBetweenLevels 2;
 
     // Explicit feature edge refinement
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     features
     (
+    	{
+             file "rollRight.eMesh";
+             level 0;
+             //level 1;
+         }
 
-        {
-            file "rollRight.eMesh";
-            level 0;
-        }
 
-        {
-            file "rollLeft.eMesh";
-            level 0;
-        }
+         {
+             file "rollRight_area.eMesh";
+             level 0;
+             //level 2;
+             //level 4;
+             //level 6;
+         }
 
     );
 
-    
+    // Surface based refinement
+    // ~~~~~~~~~~~~~~~~~~~~~~~~
+
     refinementSurfaces
     {
 
-        rollRight_stlSurface
+		
+		rollRight
         {
-            level (2 2);
-        }
-         rollLeft_stlSurface
+			//level (2 2);
+            level (0 0);
+
+            patchInfo
+            {
+                type wall;
+            }
+		}
+
+	
+        rollRight_area
         {
-            level (2 2);
+	    	//level (0 0);
+            level (1 1);
+	    	//level (1 2);
+	    	//level (2 2);
+
+            cellZone cell_inner_volume;
+            faceZone face_inner_volume;
+
+	    	faceType internal;
+
+	    	//cellZoneInside inside;
+            cellZoneInside insidePoint;
+            insidePoint (0.0 0.0 0.0);
         }
+
+/*
+		cylinder
+        {
+			level (0 0);
+
+            faceZone face_inner;
+            cellZone cell_inner;
+
+            cellZoneInside inside;
+
+            //cellZoneInside inside;  //outside/insidePoint
+            //- Optional specification of what to do with faceZone faces:
+            //      internal : keep them as internal faces (default)
+            //      baffle   : create baffles from them. This gives more
+            //                 freedom in mesh motion
+            //      boundary : create free-standing boundary faces (baffles
+            //                 but without the shared points)
+            //faceType baffle;
+		}
+*/
+
     }
 
-
-
     // Feature angle:
-    resolveFeatureAngle 30;	
+    // - used if min and max refinement level of a surface differ
+    // - used if feature snapping (see snapControls below) is used
+    //resolveFeatureAngle 10;
+    resolveFeatureAngle 30;		//default
+
+    //- Optional increment (on top of max level) in small gaps
+    //gapLevelIncrement 2;
 
     planarAngle 30;
 
@@ -115,53 +158,68 @@ castellatedMeshControls
 
     refinementRegions
     {
-         cylinderRight
+/*
+		box
         {
-            mode outside;        	// inside - outside
-            levels ((1 1));     	// min max
+			mode inside;
+            levels  (( 1 1 ));
+            //levels  (( 2 2 ));
+            //levels  (( 4 4 ));
+		}
+*/
 
-        }
-
-         cylinderLeft
+/*
+		cylinder
         {
-            mode outside;        	// inside - outside
-            levels ((1 1));     	// min max
-
-        }
+			mode inside;
+            //levels (( 0 0 ));
+            levels (( 1 1 ));
+            //levels (( 2 2 ));
+            //levels (( 2 4 ));
+		}
+*/
     }
 
-    locationInMesh (0.00 -0.1 0.00); 
+    // Mesh selection
+    // ~~~~~~~~~~~~~~
+
+    //locationInMesh (-50.0 0.0 100.0 );
+    locationInMesh (0 -0.2 0 );
 
     allowFreeStandingZoneFaces true;
-
 }
 
 // Settings for the snapping.
 snapControls
 {
-    nSmoothPatch 3;	//recommended
+    nSmoothPatch 3;	    //default
     //nSmoothPatch 10;	//improved
 
     tolerance 2.0;
-    //tolerance 1.0;
 
-    nSolveIter 30;	//recommended
-    //nSolveIter 100;	//improved
+    //default
+    //nSolveIter 30;
+    //nRelaxIter 5;
 
-    nRelaxIter 5;	//recommended
-    //nRelaxIter 10;	//improved	10-20-50
+    //Improved
+    nSolveIter 100;
+    nRelaxIter 10;
 
     // Feature snapping
 
-        nFeatureSnapIter 10;	//recommended
-        //nFeatureSnapIter 100;	//improved 	20-50-100
+        nFeatureSnapIter 10;
+        //nFeatureSnapIter 20;	//improved
 
+        // Detect (geometric only) features by sampling the surface
+        // (default=false).
         implicitFeatureSnap false;
 
+        // Use castellatedMeshControls::features (default = true)
         explicitFeatureSnap true;
 
+        // Detect features between multiple surfaces
+        // (only for explicitFeatureSnap, default = false)
         multiRegionFeatureSnap false;
-
 }
 
 // Settings for the layer addition.
@@ -169,47 +227,65 @@ addLayersControls
 {
     relativeSizes true;
 
+	// Expansion factor for layer mesh
+	//expansionRatio 1.0;
     expansionRatio 1.2;
 
-    finalLayerThickness 0.5;
+	finalLayerThickness 0.5;
 
-    minThickness 0.1;
+	//firstLayerThickness 0.1;
+	//thickness 0.5
 
+    minThickness 0.001;
+
+    // Per final patch (so not geometry!) the layer information
+    // Note: This behaviour changed after 21x. Any non-mentioned patches
+    //       now slide unless:
+    //          - nSurfaceLayers is explicitly mentioned to be 0.
+    //          - angle to nearest surface < slipFeatureAngle (see below)
     layers
     {
-        rollRight_stlSurface 
-        {
-            nSurfaceLayers 3;
-        }
-         rollLeft_stlSurface 
-        {
-            nSurfaceLayers 3;
-        }
+		
     }
 
     nGrow 0;
 
     // Advanced settings
-        featureAngle 130;		//default
-        maxFaceThicknessRatio 0.5;
-        nSmoothSurfaceNormals 1;
-        nSmoothThickness 10;
-        minMedialAxisAngle 90;
-        minMedianAxisAngle 90;
-        maxThicknessToMedialRatio 0.3;
-        nSmoothNormals 3;
-        slipFeatureAngle 30;
-        nRelaxIter 5;
-        nBufferCellsNoExtrude 0;
-        nLayerIter 50;
-        nRelaxedIter 20;
+
+    featureAngle              100;
+    slipFeatureAngle          30;
+
+    nLayerIter                50;
+    nRelaxedIter              20;
+    nRelaxIter                5;
+
+    nGrow                     0;
+
+    nSmoothSurfaceNormals     1;
+    nSmoothNormals            3;
+    nSmoothThickness          10;
+    maxFaceThicknessRatio     0.5;
+    maxThicknessToMedialRatio 0.3;
+
+    minMedialAxisAngle        90;
+    nMedialAxisIter           10;
+
+    nBufferCellsNoExtrude     0;
+    additionalReporting       false;
+//    nSmoothDisplacement       0;
+//    detectExtrusionIsland     false;
 }
 
-// Generic mesh quality settings. At any undoable phase these determine where to undo.
+// Generic mesh quality settings. At any undoable phase these determine
+// where to undo.
 meshQualityControls
 {
+    // Specify mesh quality constraints in separate dictionary so can
+    // be reused (e.g. checkMesh -meshQuality)
     #include "meshQualityDict"
 
+    // Optional : some meshing phases allow usage of relaxed rules.
+    // See e.g. addLayersControls::nRelaxedIter.
     relaxed
     {
         // Maximum non-orthogonality allowed. Set to 180 to disable.
@@ -226,14 +302,38 @@ meshQualityControls
         errorReduction 0.75;
 }
 
+// Advanced
 
+//debug 0;
+//debug 3;
+
+//// Debug flags
+/*
 debugFlags
 (
-  
+    mesh            // write intermediate meshes
+    intersections   // write current mesh intersections as .obj files
+    featureSeeds    // write information about explicit feature edge
+                    // refinement
+    attraction      // write attraction as .obj files
+    layerInfo       // write information about layers
 );
+*/
 
+//
+//// Write flags
+/*
+writeFlags
+(
+    scalarLevels    // write volScalarField with cellLevel for postprocessing
+    layerSets       // write cellSets, faceSets of faces in layer
+    layerFields     // write volScalarField for layer coverage
+);
+*/
 
-
+// Merge tolerance. Is fraction of overall bounding box of initial mesh.
+// Note: the write tolerance needs to be higher than this.
 mergeTolerance 1e-6;
 
 // ************************************************************************* //
+

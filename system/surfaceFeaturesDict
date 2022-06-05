@@ -14,7 +14,7 @@ FoamFile
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 
-surfaces ("rollRight.stl" "rollLeft.stl");
+surfaces ( "rollRight.stl" "rollRight_area.stl");
 
 // Mark edges whose adjacent surface normals are at an angle less
 // than includedAngle as features
