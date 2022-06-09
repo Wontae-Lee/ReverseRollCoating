@@ -25,14 +25,16 @@ boundaryField
 
     inlet
     {
-        type            fixedValue;
-        value           $internalField;
+        type            inletOutlet;
+        inletValue      uniform 0;
+        value           uniform 0;
     }
 
     outlet
     {
         type            inletOutlet;
-        inletValue      $internalField;
+        inletValue      uniform 0;
+        value           uniform 0;
     }
 
     wall

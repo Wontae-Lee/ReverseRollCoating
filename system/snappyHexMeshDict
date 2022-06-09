@@ -162,6 +162,11 @@ castellatedMeshControls
             level       (0 0);
             regions
             {
+                simulationWall
+                {
+                    level       (0 0);
+                    type        wall;
+                }
                 inlet
                 {
                     level       (0 0);
@@ -183,6 +188,7 @@ castellatedMeshControls
         roll
         {
             level       (2 2);
+            type        wall;
       
             
         }
