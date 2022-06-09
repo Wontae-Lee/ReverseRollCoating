@@ -9,44 +9,24 @@ FoamFile
 {
     format      ascii;
     class       dictionary;
-    location    "system";
-    object      controlDict;
+    location    "constant";
+    object      dynamicMeshDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-application     interFoam;
+dynamicFvMesh   dynamicMotionSolverFvMesh;
 
-startFrom       startTime;
+motionSolverLibs ( "libfvMotionSolvers.so" );
 
-startTime       0;
+motionSolver    solidBody;
 
-stopAt          endTime;
+cellZone        rollArea;
 
-endTime         8;
+solidBodyMotionFunction  rotatingMotion;
 
-deltaT          0.05;
+origin      (0 0 0);
+axis        (0 1 0);
+omega       1.6;
 
-writeControl    adjustableRunTime;
-
-writeInterval   0.1;
-
-purgeWrite      0;
-
-writeFormat     binary;
-
-writePrecision  6;
-
-writeCompression off;
-
-timeFormat      general;
-
-timePrecision   6;
-
-runTimeModifiable true;
-
-adjustTimeStep  yes;
-
-maxCo           2;
-maxAlphaCo      1;
 
 // ************************************************************************* //

@@ -8,45 +8,37 @@
 FoamFile
 {
     format      ascii;
-    class       dictionary;
-    location    "system";
-    object      controlDict;
+    class       volScalarField;
+    location    "0";
+    object      p_rgh;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-application     interFoam;
+dimensions      [1 -1 -2 0 0];
 
-startFrom       startTime;
+internalField   uniform 1e5;
 
-startTime       0;
+boundaryField
+{
+    //- Set patchGroups for constraint patches
+    #includeEtc "caseDicts/setConstraintTypes"
 
-stopAt          endTime;
+    inlet
+    {
+        type            fixedFluxPressure;
+    }
 
-endTime         8;
+    outlet
+    {
+        type            totalPressure;
+        p0              $internalField;
+    }
 
-deltaT          0.05;
+    wall
+    {
+        type            fixedFluxPressure;
+    }
+}
 
-writeControl    adjustableRunTime;
-
-writeInterval   0.1;
-
-purgeWrite      0;
-
-writeFormat     binary;
-
-writePrecision  6;
-
-writeCompression off;
-
-timeFormat      general;
-
-timePrecision   6;
-
-runTimeModifiable true;
-
-adjustTimeStep  yes;
-
-maxCo           2;
-maxAlphaCo      1;
 
 // ************************************************************************* //

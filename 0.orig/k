@@ -8,18 +8,40 @@
 FoamFile
 {
     format      ascii;
-    class       dictionary;
-    location    "system";
-    object      decomposeParDict;
+    class       volScalarField;
+    location    "0";
+    object      k;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-numberOfSubdomains 8;
+dimensions      [0 2 -2 0 0 0 0];
 
-method          simple;
+internalField   uniform 0.06;
 
-simpleCoeffs
+boundaryField
 {
-  n           (2 1 4);
+    //- Set patchGroups for constraint patches
+    #includeEtc "caseDicts/setConstraintTypes"
+
+    inlet
+    {
+        type            fixedValue;
+        value           $internalField;
+    }
+
+    outlet
+    {
+        type            inletOutlet;
+        inletValue      $internalField;
+        value           $internalField;
+    }
+
+    wall
+    {
+        type            kqRWallFunction;
+        value           $internalField;
+    }
 }
+
+
 // ************************************************************************* //

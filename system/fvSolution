@@ -9,7 +9,6 @@ FoamFile
 {
     format      ascii;
     class       dictionary;
-    location    "system";
     object      fvSolution;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -22,61 +21,72 @@ solvers
         nAlphaSubCycles 1;
 
         MULESCorr       yes;
-        nLimiterIter    3;
+        nLimiterIter    5;
 
         solver          smoothSolver;
         smoother        symGaussSeidel;
         tolerance       1e-8;
         relTol          0;
-    }
+        maxIter         10;
+        minIter         1;
+    };
 
     "pcorr.*"
     {
-        solver          PCG;
-        preconditioner  DIC;
-        tolerance       1e-5;
+        solver          GAMG;
+        tolerance       1e-2;
         relTol          0;
+        smoother        DICGaussSeidel;
+        cacheAgglomeration no;
+        maxIter         50;
     }
 
     p_rgh
     {
-        solver          PCG;
-        preconditioner  DIC;
-        tolerance       1e-07;
-        relTol          0.05;
+        $pcorr;
+        tolerance       1e-9;
+        relTol          0.01;
     }
 
     p_rghFinal
     {
         $p_rgh;
+        tolerance       1e-9;
         relTol          0;
     }
 
-    "(U|k|epsilon).*"
+    "(U|k|epsilon)"
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;
-        tolerance       1e-06;
-        relTol          0;
+        tolerance       1e-6;
+        relTol          0.1;
         minIter         1;
+    }
+
+    "(U|k|epsilon)Final"
+    {
+        $U;
+        relTol          0;
     }
 }
 
 PIMPLE
 {
-    momentumPredictor   yes;
-    nOuterCorrectors    2;
-    nCorrectors         5;
-    nNonOrthogonalCorrectors 1;
-
+    correctPhi          yes;
+    nOuterCorrectors    3;
+    nCorrectors         1;
+    nNonOrthogonalCorrectors 0;
 }
 
 relaxationFactors
 {
-    equations
-    {
-        ".*"                1;
-    }
+    "(U|k|epsilon).*"   1;
+}
+
+cache
+{
+    grad(U);
 }
 
 // ************************************************************************* //
