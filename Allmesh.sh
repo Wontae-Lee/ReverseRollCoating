@@ -1,8 +1,10 @@
 
 blockMesh
+# setFields
 surfaceFeatures
 snappyHexMesh -overwrite
-# setFields
+
 createBaffles -overwrite
 splitBaffles -overwrite
+createPatch
 renumberMesh -noFields -overwrite

@@ -10,11 +10,11 @@ FoamFile
     format      ascii;
     class       volScalarField;
     location    "0";
-    object      alpha.water;
+    object      nut;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 0 0 0 0];
+dimensions      [0 2 -1 0 0 0 0];
 
 internalField   uniform 0;
 
@@ -25,26 +25,22 @@ boundaryField
 
     inlet
     {
-        type            inletOutlet;
-        inletValue      uniform 1;
-        value           uniform 1;
+        type            calculated;
+        value           uniform 0;
     }
 
-    
-    "(outlet|blockWalls)"
+    outlet
     {
-        type            inletOutlet;
-        inletValue      uniform 0;
+        type            calculated;
         value           uniform 0;
     }
 
     wall
     {
-        type            zeroGradient;
-        value           $internalField;
+        type            nutkWallFunction;
+        value           uniform 0;
     }
-
-
 }
+
 
 // ************************************************************************* //

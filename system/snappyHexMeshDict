@@ -129,11 +129,11 @@ castellatedMeshControls
         }
         {
             file        "simulationWall.eMesh";
-            level       0;
+            level       2;
         }
         {
             file        "rollArea.eMesh";
-            level       2;
+            level       4;
         }
     );
 
@@ -152,24 +152,24 @@ castellatedMeshControls
     {
         rollArea
         {
-            level       (2 2);
+            level       (4 4);
             cellZone    rollArea;
             faceZone    rollArea;
             mode        inside;
         }
         simulationWall
         {
-            level       (0 0);
+            level       (2 2);
             regions
             {
                 simulationWall
                 {
-                    level       (0 0);
+                    level       (2 2);
                     type        wall;
                 }
                 inlet
                 {
-                    level       (0 0);
+                    level       (2 2);
                     patchInfo
                     {
                         type        patch;
@@ -177,7 +177,7 @@ castellatedMeshControls
                 }
                 outlet
                 {
-                    level       (0 0);
+                    level       (2 2);
                     patchInfo
                     {
                         type        patch;

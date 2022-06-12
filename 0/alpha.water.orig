@@ -30,8 +30,7 @@ boundaryField
         value           uniform 1;
     }
 
-    
-    "(outlet|blockWalls)"
+    outlet
     {
         type            inletOutlet;
         inletValue      uniform 0;
@@ -43,8 +42,6 @@ boundaryField
         type            zeroGradient;
         value           $internalField;
     }
-
-
 }
 
 // ************************************************************************* //

@@ -10,11 +10,11 @@ FoamFile
     format      ascii;
     class       volScalarField;
     location    "0";
-    object      alpha.water;
+    object      p_rgh;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 0 0 0 0];
+dimensions      [1 -1 -2 0 0];
 
 internalField   uniform 0;
 
@@ -25,26 +25,20 @@ boundaryField
 
     inlet
     {
-        type            inletOutlet;
-        inletValue      uniform 1;
-        value           uniform 1;
+        type            fixedFluxPressure;
     }
 
-    
-    "(outlet|blockWalls)"
+    outlet
     {
-        type            inletOutlet;
-        inletValue      uniform 0;
-        value           uniform 0;
+        type            totalPressure;
+        p0              $internalField;
     }
 
     wall
     {
-        type            zeroGradient;
-        value           $internalField;
+        type            fixedFluxPressure;
     }
-
-
 }
+
 
 // ************************************************************************* //
