@@ -34,7 +34,15 @@ boundaryField
         p0              $internalField;
     }
 
-    wall
+    walls
+    {
+        type            fixedFluxPressure;
+    }
+    rollRight
+    {
+        type            fixedFluxPressure;
+    }
+    rollLeft
     {
         type            fixedFluxPressure;
     }

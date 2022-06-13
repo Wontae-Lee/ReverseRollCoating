@@ -35,8 +35,17 @@ boundaryField
         inletValue      $internalField;
         value           $internalField;
     }
-
-    wall
+    walls
+    {
+        type            epsilonWallFunction;
+        value           $internalField;
+    }
+    rollRight
+    {
+        type            epsilonWallFunction;
+        value           $internalField;
+    }
+    rollLeft
     {
         type            epsilonWallFunction;
         value           $internalField;

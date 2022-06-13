@@ -27,48 +27,56 @@ addLayers       false;
 // - to 'snap' the mesh boundary to the surface
 geometry
 {
-    rollArea
+    rollRightArea
     {
         type        triSurfaceMesh;
-        file        "rollArea.obj";
+        file        "rollRightArea.obj";
         regions
         {
-            rollArea
+            rollRightArea
             {
-                 name       rollArea;
+                name       rollRightArea;
             }
         }
     }
     
-    simulationWall
+
+    rollRight
     {
         type        triSurfaceMesh;
-        file        "simulationWall.obj";
+        file        "rollRight.obj";
         regions
         {
-            simulationWall
+            rollRight
             {
-                 name       simulationWall;
+                 name       rollRight;
             }
-            inlet
+          
+        }
+    }
+    rollLeftArea
+    {
+        type        triSurfaceMesh;
+        file        "rollLeftArea.obj";
+        regions
+        {
+            rollLeftArea
             {
-                 name       inlet;
-            }
-            outlet
-            {
-                 name       outlet;
+                 name       rollLeftArea;
             }
         }
     }
-    roll
+    
+
+    rollLeft
     {
         type        triSurfaceMesh;
-        file        "roll.obj";
+        file        "rollLeft.obj";
         regions
         {
-            roll
+            rollLeft
             {
-                 name       roll;
+                 name       rollLeft;
             }
           
         }
@@ -124,16 +132,20 @@ castellatedMeshControls
     features
     (
         {
-            file        "roll.eMesh";
+            file        "rollRight.eMesh";
+            level       1;
+        }
+        {
+            file        "rollRightArea.eMesh";
             level       2;
         }
         {
-            file        "simulationWall.eMesh";
-            level       2;
+            file        "rollLeft.eMesh";
+            level       1;
         }
         {
-            file        "rollArea.eMesh";
-            level       4;
+            file        "rollLeftArea.eMesh";
+            level       2;
         }
     );
 
@@ -150,46 +162,48 @@ castellatedMeshControls
 
     refinementSurfaces
     {
-        rollArea
+        rollRightArea
         {
-            level       (4 4);
-            cellZone    rollArea;
-            faceZone    rollArea;
+            type        boundary;           
+            level       (2 2);
+            cellZone    rollRightArea;
+            faceZone    rollRightArea;
             mode        inside;
         }
-        simulationWall
+        
+        rollRight
         {
-            level       (2 2);
+            level       (1 1);
             regions
             {
-                simulationWall
+                rollRight
                 {
-                    level       (2 2);
-                    type        wall;
+                    level (1 1);
                 }
-                inlet
-                {
-                    level       (2 2);
-                    patchInfo
-                    {
-                        type        patch;
-                    }
-                }
-                outlet
-                {
-                    level       (2 2);
-                    patchInfo
-                    {
-                        type        patch;
-                    }
-                }
-            }
+            }     
+            
         }
-        roll
+
+        rollLeftArea
         {
+            type        boundary;   
             level       (2 2);
-            type        wall;
-      
+            cellZone    rollLeftArea;
+            faceZone    rollLeftArea;
+            mode        inside;
+        }
+        
+        rollLeft
+        {
+            level       (1 1);
+
+            regions
+            {
+                rollLeft
+                {
+                    level (1 1);
+                }
+            }   
             
         }
     }
@@ -213,11 +227,7 @@ castellatedMeshControls
 
     refinementRegions
     {
-        rollArea
-        {
-            mode    inside;
-            level   2;
-        }
+       
  
     }
 
@@ -230,7 +240,7 @@ castellatedMeshControls
     // section reachable from the locationInMesh is kept.
     // NOTE: This point should never be on a face, always inside a cell, even
     // after refinement.
-    locationInMesh (-0.05 0 0.04);
+    locationInMesh (0 -0.20 0);
 
 
     // Whether any faceZones (as specified in the refinementSurfaces)

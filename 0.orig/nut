@@ -34,12 +34,22 @@ boundaryField
         type            calculated;
         value           uniform 0;
     }
-
-    wall
+    walls
     {
         type            nutkWallFunction;
         value           uniform 0;
     }
+    rollRight
+    {
+        type            nutkWallFunction;
+        value           uniform 0;
+    }
+    rollLeft
+    {
+        type            nutkWallFunction;
+        value           uniform 0;
+    }
+
 }
 
 

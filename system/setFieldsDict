@@ -16,12 +16,12 @@ FoamFile
 
 
 
-xminFluid  -0.04;
-xmaxFluid  0.04;
-yminFluid  -0.01;
-ymaxFluid  0.01;
-zminFluid  0.06;
-zmaxFluid  0.07;
+xminFluid  -0.05;
+xmaxFluid  0.05;
+yminFluid  0.25;
+ymaxFluid  0.30;
+zminFluid  -0.02;
+zmaxFluid  0.02;
 
 
 

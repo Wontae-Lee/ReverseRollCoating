@@ -35,12 +35,23 @@ boundaryField
         inletValue      $internalField;
         value           $internalField;
     }
-
-    wall
+    walls
     {
         type            kqRWallFunction;
         value           $internalField;
     }
+    rollRight
+    {
+        type            kqRWallFunction;
+        value           $internalField;
+    }
+    rollLeft
+    {
+        type            kqRWallFunction;
+        value           $internalField;
+    }
+
+
 }
 
 

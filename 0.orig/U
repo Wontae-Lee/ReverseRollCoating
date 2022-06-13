@@ -26,7 +26,7 @@ boundaryField
     inlet
     {
         type            fixedValue;
-        value           uniform (0 0 1);
+        value           uniform (0 0 0);
     }
 
     outlet
@@ -35,16 +35,18 @@ boundaryField
         inletValue      uniform (0 0 0);
         value           uniform (0 0 0);
     }
-
-    wall
+    walls
     {
-        type            noSlip
+        type            noSlip;
     }
 
-    "roll.*"
+    rollRight
     {
-        type            movingWallVelocity;
-        value           uniform (0 0 0);
+        type            noSlip;
+    }
+    rollLeft
+    {
+        type            noSlip;
     }
 }
 

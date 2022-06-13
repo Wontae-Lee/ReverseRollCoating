@@ -1,46 +1,86 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-  =========                 |
+  =========                 |				
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Version:  9
+    \\  /    A nd           | Version:  9                                   	
      \\/     M anipulation  |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
     format      ascii;
     class       dictionary;
-    object      createPatchDict;
+    object      createBafflesDict;
 }
-
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+// Whether to convert internal faces only (so leave boundary faces intact).
+// This is only relevant if your face selection type can pick up boundary
+// faces.
 internalFacesOnly true;
 
+// Baffles to create.
 baffles
 {
-    rotating
+    rotating1
     {
+        //- Use predefined faceZone to select faces and orientation.
         type        faceZone;
-        zoneName    rollArea;
+        zoneName    rollRightArea;
 
         patches
         {
             master
             {
+                //- Master side patch
                 name            AMI1;
                 type            cyclicAMI;
+                matchTolerance  0.0001;
                 neighbourPatch  AMI2;
+                transform       none;
             }
 
             slave
             {
+                //- Slave side patch
                 name            AMI2;
                 type            cyclicAMI;
+                matchTolerance  0.0001;
                 neighbourPatch  AMI1;
+                transform       none;
             }
         }
     }
-}
 
+    rotating2
+    {
+        //- Use predefined faceZone to select faces and orientation.
+        type        faceZone;
+        zoneName    rollLeftArea;
+
+        patches
+        {
+            master
+            {
+                //- Master side patch
+                name            AMI3;
+                type            cyclicAMI;
+                matchTolerance  0.0001;
+                neighbourPatch  AMI4;
+                transform       none;
+            }
+
+            slave
+            {
+                //- Slave side patch
+                name            AMI4;
+                type            cyclicAMI;
+                matchTolerance  0.0001;
+                neighbourPatch  AMI3;
+                transform       none;
+            }
+        }
+    }
+
+}
 
 // ************************************************************************* //

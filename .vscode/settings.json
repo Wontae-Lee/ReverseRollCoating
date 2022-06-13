@@ -7,7 +7,7 @@
         "**/constant/*": "OpenFOAM",
         "**/0/*": "OpenFOAM",
         "**/system/*" :"OpenFOAM",
-        "**/0_org/*": "OpenFOAM",
+        "**/0.orig/*": "OpenFOAM",
 
 
         }

@@ -15,12 +15,12 @@ FoamFile
 
 convertToMeters 1;
 
-xmin -0.10;
-xmax  0.10;
-ymin -0.10;
-ymax  0.10;
-zmin -0.10;
-zmax  0.10;
+xmin -0.15;
+xmax  0.15;
+ymin -0.30;
+ymax  0.35;
+zmin -0.03;
+zmax  0.03;
 
 
 dx 0.01;
@@ -65,9 +65,9 @@ boundary
         faces
         (
             (2 6 5 1)
-            (0 3 2 1)
+            (1 5 4 0)
             (0 4 7 3)
-            (4 5 6 7)
+            (3 7 6 2)
         );
     }
     inlet
@@ -75,7 +75,8 @@ boundary
         type patch;
         faces
         (
-            (3 7 6 2)
+            (4 5 6 7)
+           
         );
     }
     outlet
@@ -83,7 +84,8 @@ boundary
         type patch;
         faces
         (
-            (1 5 4 0)
+            (0 3 2 1)
+           
         );
     }
 );
