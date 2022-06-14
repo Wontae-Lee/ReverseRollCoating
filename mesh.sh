@@ -2,7 +2,6 @@ rm -r 0
 cp -r 0.orig 0
 
 blockMesh
-
 surfaceFeatures
 snappyHexMesh -overwrite
 

@@ -29,7 +29,7 @@ multiSolidBodyMotionSolverCoeffs
         {
             origin        (0.07 0 0);
             axis          (0 0 1);
-	    omega         constant 6.283185;	//360 deg/s
+	    omega         constant -6;	//360 deg/s
         }
     }
 
@@ -40,7 +40,7 @@ multiSolidBodyMotionSolverCoeffs
         {
             origin        (-0.07 0 0);
             axis          (0 0 1);
-	    omega         constant 6.283185;	//360 deg/s
+	    omega         constant -1;	//360 deg/s
         }
     }
 
