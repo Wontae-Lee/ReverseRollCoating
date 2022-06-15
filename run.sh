@@ -1,3 +1,4 @@
+rm -r 0.0001
 
 decomposePar -force
 #mpirun -np 8 interFoam > log.interFoam -parallel

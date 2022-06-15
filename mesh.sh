@@ -6,7 +6,7 @@ surfaceFeatures
 snappyHexMesh -overwrite
 
 decomposePar
-mpirun -np 8 snappyHexMesh -parallel -overwrite | tee log.shm
+mpirun -np 4 snappyHexMesh -parallel -overwrite | tee log.shm
 #reconstructParMesh -mergeTol 1e-06 -constant
 reconstructParMesh -constant
 
