@@ -3,7 +3,6 @@ cp -r 0.orig 0
 
 blockMesh
 surfaceFeatures
-snappyHexMesh -overwrite
 
 decomposePar
 mpirun -np 4 snappyHexMesh -parallel -overwrite | tee log.shm
